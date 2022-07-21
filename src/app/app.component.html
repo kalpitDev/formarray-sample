@@ -1,0 +1,95 @@
+<div class="page-wrap">
+  <div class="container">
+    
+    <form [formGroup]="schoolForm" class="school-form" (ngSubmit)="onSubmit()">
+
+      <div formArrayName="classes">
+
+        <div *ngFor="let class of classes().controls; let classIndex=index">
+
+          <div class="class-box" [formGroupName]="classIndex">
+            
+            Class Name :
+            <input type="text" formControlName="name">
+
+            <!-- <button (click)="removeEmployee(classIndex)">Remove</button> -->
+
+
+            <div class="subject-box" formArrayName="subjects">
+
+              <div class="single-subject-form" *ngFor="let subject of classSubjects(classIndex).controls; let subjectIndex=index">
+
+
+
+                <div [formGroupName]="subjectIndex">
+                  
+                  Subject :
+                  <input type="text" formControlName="name">
+
+<!-- 
+                  <div formArrayName="batches">
+
+                    <div *ngFor="let batch of subjectBatch(subjectIndex, classIndex).controls; let batchIndex=index">
+          
+          
+          
+                      <div [formGroupName]="batchIndex" style="border: 1px solid blue; padding: 10px; width: 600px; margin: 5px;">
+                        
+                        Batch - {{batchIndex + 1}} :
+                        <input type="text" formControlName="name">
+          
+                      </div>
+          
+                    </div>
+                    <button type="button" (click)="addSubjectBatch(subjectIndex, classIndex)">Add Batch</button>
+                  </div> -->
+
+                  <!-- <button (click)="removeEmployeeSkill(classIndex,skillIndex)">Remove</button> -->
+
+                </div>
+
+              </div>
+              <button type="button" class="add-btn" (click)="addClassSubject(classIndex)">Add Subject</button>
+            </div>
+
+
+          </div>
+
+        </div>
+      </div>
+      <p>
+        <button type="button" class="add-btn" (click)="addClass()">Add Class</button>
+      </p>
+      <p>
+        <button *ngIf="schoolForm.value.classes.length > 0" class="submit-btn" type="submit">Submit</button>
+      </p>
+
+    </form>
+
+
+
+    <div class="view-data" *ngIf="submited">
+      <div class="main-record" *ngFor="let class of schoolForm.value.classes let i=index">
+        <label class="single-record">
+          <span class="icon" *ngIf="openedClass != i" (click)="openClass(i)">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+            </svg>
+          </span>
+          <span class="icon" *ngIf="openedClass == i" (click)="closeClass(i)">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+            </svg>
+          </span>
+          <h4>Class Name : {{class.name}}</h4>
+        </label>
+        <div class="subject-list" *ngIf="openedClass == i">
+          <div class="subject-record" *ngFor="let subject of class.subjects let j=index">
+            <label class="single-record"><p>Subject Name : {{subject.name}}</p></label>
+        </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</div>
